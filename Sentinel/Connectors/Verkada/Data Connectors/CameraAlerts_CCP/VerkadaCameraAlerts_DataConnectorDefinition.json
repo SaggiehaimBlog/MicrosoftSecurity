@@ -1,0 +1,93 @@
+{
+    "name": "VerkadaCameraAlertsCCPDefinition",
+    "apiVersion": "2022-09-01-preview",
+    "type": "Microsoft.SecurityInsights/dataConnectorDefinitions",
+    "location": "{{location}}",
+    "kind": "Customizable",
+    "id": "VerkadaCameraAlertsCCPDefinition",
+    "properties": {
+        "connectorUiConfig": {
+            "id": "VerkadaCameraAlertsCCPDefinition",
+            "title": "Verkada Camera Alerts (CCP)",
+            "publisher": "Microsoft",
+            "descriptionMarkdown": "The Verkada Camera Alerts data connector provides the capability to ingest [Verkada Camera Alerts](https://apidocs.verkada.com/reference/getnotificationsviewv1) into Microsoft Sentinel using the Verkada REST API. Refer to [Verkada documentation](https://apidocs.verkada.com/reference/getnotificationsviewv1) for more information.",
+            "graphQueriesTableName": "Verkada_Camera_Alerts_CL",
+            "graphQueries": [
+                {
+                    "metricName": "Events received",
+                    "legend": "Verkada camera alerts received",
+                    "baseQuery": "{{graphQueriesTableName}}"
+                }
+            ],
+            "sampleQueries": [
+                {
+                    "description": "All Verkada camera alerts",
+                    "query": "Verkada_Camera_Alerts_CL\n| sort by TimeGenerated desc"
+                }
+            ],
+            "dataTypes": [
+                {
+                    "name": "{{graphQueriesTableName}}",
+                    "lastDataReceivedQuery": "{{graphQueriesTableName}}\n| summarize Time = max(TimeGenerated)\n| where isnotempty(Time)"
+                }
+            ],
+            "connectivityCriteria": [
+                {
+                    "type": "HasDataConnectors"
+                }
+            ],
+            "permissions": {
+                "resourceProvider": [
+                    {
+                        "provider": "Microsoft.OperationalInsights/workspaces",
+                        "permissionsDisplayText": "Read and Write permissions are required.",
+                        "providerDisplayName": "Workspace",
+                        "scope": "Workspace",
+                        "requiredPermissions": {
+                            "write": true,
+                            "read": true,
+                            "delete": true
+                        }
+                    }
+                ],
+                "customs": [
+                    {
+                        "name": "Verkada API credentials with access to Cameras Endppoint with Read permissions",
+                        "description": "Verkada API requires a Verkada API key to authenticate. [See the documentation to learn more about how to get started with Verkada API](https://apidocs.verkada.com/reference/quick-start-guide)"
+                    }
+                ]
+            },
+            "instructionSteps": [
+                {
+                    "description": ">**NOTE:** This connector uses Codeless Connecor Platform (CCP) to connect to the Verkada REST API to pull Camera Alerts logs into Microsoft Sentinel."
+                },
+                {
+                    "description": "**STEP 1 - Create Verkada API Key**\n\nSee documentation to [setup client credentials authentication](https://developer.verkada.com/guides/authentication/client-credentials/client-credentials-setup/)\n"
+                },
+                {
+                    "description": "**STEP 2 - Allow API Endpoint**\n\nMake sure the Cameras endpoint is enabled in your Verkada API settings.\n"
+                },
+                {
+                    "description": "**STEP 3 - Set Expiration**\n\nDefine the API expiration time based on the company policy.\n"
+                },
+                {
+                    "description": "**STEP 4 - Grab Verkada API Key**\n\nAnd store it in a safe location.\n"
+                },
+                {
+                    "description": "Provide the required values below:\n",
+                    "instructions": [
+                        {
+                            "type": "OAuthForm",
+                            "parameters": {
+                                "clientSecretLabel": "API Key",
+                                "connectButtonLabel": "Connect",
+                                "disconnectButtonLabel": "Disconnect"
+                            }
+                        }
+                    ],
+                    "title": "Connect to Box to start collecting event logs to Microsoft Sentinel"
+                }
+            ]
+        }
+    }
+}

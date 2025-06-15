@@ -1,0 +1,47 @@
+[
+    {
+        "name": "Verkada_Camera_Alerts_CL",
+        "apiVersion": "2022-10-01",
+        "type": "Microsoft.OperationalInsights/workspaces/tables",
+        "location": "{{location}}",
+        "properties": {
+            "schema": {
+                "name": "Verkada_Camera_Alerts_CL",
+                "columns": [
+                    {
+                        "name": "camera_id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "created",
+                        "type": "datetime"
+                    },
+                    {
+                        "name": "crowd_threshold",
+                        "type": "int"
+                    },
+                    {
+                        "name": "image_url",
+                        "type": "string"
+                    },
+                    {
+                        "name": "notification_type",
+                        "type": "string"
+                    },
+                    {
+                        "name": "objects",
+                        "type": "dynamic"
+                    },
+                    {
+                        "name": "person_label",
+                        "type": "string"
+                    },
+                    {
+                        "name": "video_url",
+                        "type": "string"
+                    }
+                ]
+            }
+        }
+    }
+]
