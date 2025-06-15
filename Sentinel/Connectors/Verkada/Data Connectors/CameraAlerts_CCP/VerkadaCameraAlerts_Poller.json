@@ -1,0 +1,51 @@
+[
+    {
+        "name": "VerkadaCamerapoller",
+        "apiVersion": "2025-03-01",
+        "type": "Microsoft.SecurityInsights/dataConnectors",
+        "kind": "RestApiPoller",
+        "properties": {
+            "connectorDefinitionName": "VerkadaCameraAlertsCCPDefinition",
+            "dataType": "Verkada_Camera_Alerts_CL",
+            "response": {
+                "eventsJsonPaths": [
+                    "$.notifications"
+                ],
+                "format": "json"
+            },
+            "paging": {
+                "pagingType": "PersistentToken",
+                "nextPageTokenJsonPath": "$.next_page_token",
+                "nextPageParaName": "page_token"
+            },
+            "auth": {
+                "type": "JwtToken",
+                "password": {
+                    "key": "apiKey",
+                    "value": "[[parameters('password')]"
+                },
+                "TokenEndpoint": "https://api.verkada.com/token",
+                "IsJsonRequest": true
+            },
+            "request": {
+                "apiEndpoint": "https://api.verkada.com/v1/alerts",
+                "rateLimitQPS": 5,
+                "queryWindowInMin": 5,
+                "httpMethod": "GET",
+                "retryCount": 3,
+                "timeoutInSeconds": 60,
+                "queryTimeFormat": "UnixTimestamp",
+                "startTimeAttributeName": "start_time",
+                "endTimeAttributeName": "end_time",
+                "headers": {
+                    "Accept": "application/json"
+                }
+            },
+            "dcrConfig": {
+                "dataCollectionEndpoint": "{{dataCollectionEndpoint}}",
+                "dataCollectionRuleImmutableId": "{{dataCollectionRuleImmutableId}}",
+                "streamName": "Custom-Verkada-Camera-Alerts"
+            }
+        }
+    }
+]

@@ -2,14 +2,19 @@
 	"publisherId": "SaggieHaim",
 	"offerId": "azure-sentinel-solution-Verkada",
 	"firstPublishDate": "2025-06-15",
-	"providers": ["Verkada"],
+	"providers": [
+		"Verkada"
+	],
 	"categories": {
-		"domains" : ["Camera","Application"]
+		"domains": [
+			"Camera",
+			"Application"
+		]
 	},
 	"support": {
-	  "name": "Saggie Hai1m",
-	  "email": "contact@saggiehaim.net",
-	  "tier": "Saggie Haim",
-	  "link": "https://saggiehaim.net"
+		"tier": "Microsoft",
+		"name": "Microsoft Corporation",
+		"email": "support@microsoft.com",
+		"link": "https://support.microsoft.com/"
 	}
 }

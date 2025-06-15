@@ -1,6 +1,6 @@
 {
     "name": "VerkadaCameraAlertsCCPDefinition",
-    "apiVersion": "2022-09-01-preview",
+    "apiVersion": "2025-03-01",
     "type": "Microsoft.SecurityInsights/dataConnectorDefinitions",
     "location": "{{location}}",
     "kind": "Customizable",
@@ -9,7 +9,7 @@
         "connectorUiConfig": {
             "id": "VerkadaCameraAlertsCCPDefinition",
             "title": "Verkada Camera Alerts (CCP)",
-            "publisher": "Microsoft",
+            "publisher": "Saggie Haim",
             "descriptionMarkdown": "The Verkada Camera Alerts data connector provides the capability to ingest [Verkada Camera Alerts](https://apidocs.verkada.com/reference/getnotificationsviewv1) into Microsoft Sentinel using the Verkada REST API. Refer to [Verkada documentation](https://apidocs.verkada.com/reference/getnotificationsviewv1) for more information.",
             "graphQueriesTableName": "Verkada_Camera_Alerts_CL",
             "graphQueries": [
@@ -71,21 +71,29 @@
                     "description": "**STEP 3 - Set Expiration**\n\nDefine the API expiration time based on the company policy.\n"
                 },
                 {
-                    "description": "**STEP 4 - Grab Verkada API Key**\n\nAnd store it in a safe location.\n"
+                    "description": "**STEP 4 - Grab Verkada API Key**\n\nStore secret in a safe location.\n"
                 },
                 {
                     "description": "Provide the required values below:\n",
                     "instructions": [
                         {
-                            "type": "OAuthForm",
+                            "type": "Textbox",
                             "parameters": {
-                                "clientSecretLabel": "API Key",
-                                "connectButtonLabel": "Connect",
-                                "disconnectButtonLabel": "Disconnect"
+                                "label": "API Key",
+                                "placeholder": "API Key",
+                                "type": "password",
+                                "name": "password"
+                            }
+                        },
+                        {
+                            "type": "ConnectionToggleButton",
+                            "parameters": {
+                                "connectLabel": "Connect",
+                                "name": "Connect"
                             }
                         }
                     ],
-                    "title": "Connect to Box to start collecting event logs to Microsoft Sentinel"
+                    "title": "Connect to Verkada to start collecting Camera Alerts logs to Microsoft Sentinel"
                 }
             ]
         }

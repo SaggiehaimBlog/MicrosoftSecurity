@@ -1,13 +1,13 @@
 [
     {
-        "name": "Verkada_Camera_Alerts",
+        "name": "VerkadaCameraAlertsDCR",
         "apiVersion": "2021-09-01-preview",
         "type": "Microsoft.Insights/dataCollectionRules",
         "location": "{{location}}",
         "properties": {
             "dataCollectionEndpointId": "{{dataCollectionEndpointId}}",
             "streamDeclarations": {
-                "Verkada_Camera_Alerts": {
+                "Custom-Verkada-Camera-Alerts": {
                     "columns": [
                         {
                             "name": "camera_id",
@@ -56,13 +56,13 @@
             "dataFlows": [
                 {
                     "streams": [
-                        "Verkada_Camera_Alerts"
+                        "Custom-Verkada-Camera-Alerts"
                     ],
                     "destinations": [
                         "sh-sentinel"
                     ],
                     "transformKql": "source\n| extend TimeGenerated = unixtime_milliseconds_todatetime(created), camera_id = tostring(camera_id), crowd_threshold = toint(crowd_threshold), image_url = tostring(image_url), notification_type = tostring(notification_type), objects = todynamic(objects), person_label = tostring(person_label), video_url = tostring(video_url)\n| project TimeGenerated, camera_id, crowd_threshold, image_url, notification_type, objects, person_label, video_url",
-                    "outputStream": "Verkada_Camera_Alerts_CL"
+                    "outputStream": "Custom-Verkada_Camera_Alerts_CL"
                 }
             ]
         }
