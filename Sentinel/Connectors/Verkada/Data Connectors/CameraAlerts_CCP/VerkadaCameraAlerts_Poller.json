@@ -44,7 +44,7 @@
             "dcrConfig": {
                 "dataCollectionEndpoint": "{{dataCollectionEndpoint}}",
                 "dataCollectionRuleImmutableId": "{{dataCollectionRuleImmutableId}}",
-                "streamName": "Custom-Verkada-Camera-Alerts"
+                "streamName": "Custom-Verkada_Camera_Alerts_CL"
             }
         }
     }

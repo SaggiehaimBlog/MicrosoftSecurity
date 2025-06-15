@@ -221,7 +221,7 @@
               "properties": {
                 "dataCollectionEndpointId": "[variables('dataCollectionEndpointId1')]",
                 "streamDeclarations": {
-                  "Custom-Verkada-Camera-Alerts": {
+                  "Custom-Verkada_Camera_Alerts_CL": {
                     "columns": [
                       {
                         "name": "camera_id",
@@ -270,7 +270,7 @@
                 "dataFlows": [
                   {
                     "streams": [
-                      "Custom-Verkada-Camera-Alerts"
+                      "Custom-Verkada_Camera_Alerts_CL"
                     ],
                     "destinations": [
                       "sh-sentinel"
@@ -593,7 +593,7 @@
                 "dcrConfig": {
                   "dataCollectionEndpoint": "[[parameters('dcrConfig').dataCollectionEndpoint]",
                   "dataCollectionRuleImmutableId": "[[parameters('dcrConfig').dataCollectionRuleImmutableId]",
-                  "streamName": "Custom-Verkada-Camera-Alerts"
+                  "streamName": "Custom-Verkada_Camera_Alerts_CL"
                 }
               }
             }
@@ -622,7 +622,7 @@
         "contentKind": "Solution",
         "contentProductId": "[variables('_solutioncontentProductId')]",
         "id": "[variables('_solutioncontentProductId')]",
-        "icon": "<img src=\"https://raw.githubusercontent.com/SaggiehaimBlog/MicrosoftSecurity/refs/heads/main/Sentinel/Connectors/Verkada/resources/logo-symbol.ico \" width=\"75px\" height=\"75px\">",
+        "icon": "<img src=\"https://raw.githubusercontent.com/SaggiehaimBlog/MicrosoftSecurity/refs/heads/main/Sentinel/Connectors/Verkada/resources/logo-symbol.svg \" width=\"75px\" height=\"75px\">",
         "contentId": "[variables('_solutionId')]",
         "parentId": "[variables('_solutionId')]",
         "source": {
