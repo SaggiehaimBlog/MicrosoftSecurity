@@ -1,7 +1,7 @@
 {
     "Name": "Verkada",
     "Author": "Saggie Haim",
-    "Logo": "<img src=\"https://raw.githubusercontent.com/SaggiehaimBlog/MicrosoftSecurity/refs/heads/main/Sentinel/Connectors/Verkada/resources/logo-symbol.svg \" width=\"75px\" height=\"75px\">",
+    "Logo": "<img src=\"https://raw.githubusercontent.com/SaggiehaimBlog/MicrosoftSecurity/refs/heads/main/Sentinel/Connectors/Verkada/resources/logo-symbol.svg\" width=\"75px\" height=\"75px\">",
     "Description": "Verkada Camera Alerts data connector provides the capability to ingest Verkada Camera Alerts into Microsoft Sentinel using the Verkada REST API.",
     "Data Connectors": [
         "Data Connectors/CameraAlerts_CCP/VerkadaCameraAlerts_DataConnectorDefinition.json"

@@ -39,7 +39,11 @@
                     {
                         "name": "video_url",
                         "type": "string"
-                    }
+                    },
+                    {
+                        "name": "TimeGenerated",
+                        "type": "datetime"
+                    }                    
                 ]
             }
         }

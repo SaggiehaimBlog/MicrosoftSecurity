@@ -1,12 +1,12 @@
 [
     {
         "name": "VerkadaCamerapoller",
-        "apiVersion": "2025-03-01",
+        "apiVersion": "2022-10-01-preview",
         "type": "Microsoft.SecurityInsights/dataConnectors",
         "kind": "RestApiPoller",
         "properties": {
             "connectorDefinitionName": "VerkadaCameraAlertsCCPDefinition",
-            "dataType": "Verkada_Camera_Alerts_CL",
+            "dataType": "VerkadaCameraAlerts_CL",
             "response": {
                 "eventsJsonPaths": [
                     "$.notifications"
@@ -25,6 +25,7 @@
                     "value": "[[parameters('password')]"
                 },
                 "TokenEndpoint": "https://api.verkada.com/token",
+                "JwtTokenJsonPath": "$.token",
                 "IsJsonRequest": true
             },
             "request": {
@@ -38,13 +39,14 @@
                 "startTimeAttributeName": "start_time",
                 "endTimeAttributeName": "end_time",
                 "headers": {
+                    "x-verkada-auth": "",
                     "Accept": "application/json"
                 }
             },
             "dcrConfig": {
                 "dataCollectionEndpoint": "{{dataCollectionEndpoint}}",
                 "dataCollectionRuleImmutableId": "{{dataCollectionRuleImmutableId}}",
-                "streamName": "Custom-Verkada_Camera_Alerts_CL"
+                "streamName": "Custom-VerkadaCameraAlerts_CL"
             }
         }
     }
