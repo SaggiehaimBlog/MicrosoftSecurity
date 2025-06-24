@@ -26,6 +26,9 @@
                 },
                 "TokenEndpoint": "https://api.verkada.com/token",
                 "JwtTokenJsonPath": "$.token",
+                "TokenEndpointHeaders": {
+                    "x-api-key": "[[parameters('password')]]"
+                },
                 "IsJsonRequest": true
             },
             "request": {
