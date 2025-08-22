@@ -90,7 +90,7 @@
                   "title": "Verkada Camera Alerts (CCP)",
                   "publisher": "Saggie Haim",
                   "descriptionMarkdown": "The Verkada Camera Alerts data connector provides the capability to ingest [Verkada Camera Alerts](https://apidocs.verkada.com/reference/getnotificationsviewv1) into Microsoft Sentinel using the Verkada REST API. Refer to [Verkada documentation](https://apidocs.verkada.com/reference/getnotificationsviewv1) for more information.",
-                  "graphQueriesTableName": "Verkada_Camera_Alerts_CL",
+                  "graphQueriesTableName": "VerkadaCameraAlerts_CL",
                   "graphQueries": [
                     {
                       "metricName": "Events received",
@@ -101,7 +101,7 @@
                   "sampleQueries": [
                     {
                       "description": "All Verkada camera alerts",
-                      "query": "Verkada_Camera_Alerts_CL\n| sort by TimeGenerated desc"
+                      "query": "VerkadaCameraAlerts_CL\n| sort by TimeGenerated desc"
                     }
                   ],
                   "dataTypes": [
@@ -221,7 +221,7 @@
               "properties": {
                 "dataCollectionEndpointId": "[variables('dataCollectionEndpointId1')]",
                 "streamDeclarations": {
-                  "Custom-Verkada_Camera_Alerts_CL": {
+                  "Custom-VerkadaCameraAlerts_CL": {
                     "columns": [
                       {
                         "name": "camera_id",
@@ -270,26 +270,26 @@
                 "dataFlows": [
                   {
                     "streams": [
-                      "Custom-Verkada_Camera_Alerts_CL"
+                      "Custom-VerkadaCameraAlerts_CL"
                     ],
                     "destinations": [
                       "sh-sentinel"
                     ],
-                    "transformKql": "source\n| extend TimeGenerated = unixtime_milliseconds_todatetime(created), camera_id = tostring(camera_id), crowd_threshold = toint(crowd_threshold), image_url = tostring(image_url), notification_type = tostring(notification_type), objects = todynamic(objects), person_label = tostring(person_label), video_url = tostring(video_url)\n| project TimeGenerated, camera_id, crowd_threshold, image_url, notification_type, objects, person_label, video_url",
-                    "outputStream": "Custom-Verkada_Camera_Alerts_CL"
+                    "transformKql": "let fromUnixTime = (t: long) {datetime(1970-01-01) + t * 1sec };\nsource\n| extend TimeGenerated = todatetime(fromUnixTime(tolong(created))), camera_id = tostring(camera_id), crowd_threshold = toint(crowd_threshold), image_url = tostring(image_url), notification_type = tostring(notification_type), objects = todynamic(objects), person_label = tostring(person_label), video_url = tostring(video_url)\n| project TimeGenerated, created, camera_id, crowd_threshold, image_url, notification_type, objects, person_label, video_url",
+                    "outputStream": "Custom-VerkadaCameraAlerts_CL"
                   }
                 ]
               }
             },
             {
-              "name": "Verkada_Camera_Alerts_CL",
+              "name": "VerkadaCameraAlerts_CL",
               "apiVersion": "2022-10-01",
               "type": "Microsoft.OperationalInsights/workspaces/tables",
               "location": "[parameters('workspace-location')]",
               "kind": null,
               "properties": {
                 "schema": {
-                  "name": "Verkada_Camera_Alerts_CL",
+                  "name": "VerkadaCameraAlerts_CL",
                   "columns": [
                     {
                       "name": "camera_id",
@@ -297,7 +297,7 @@
                     },
                     {
                       "name": "created",
-                      "type": "datetime"
+                      "type": "string"
                     },
                     {
                       "name": "crowd_threshold",
@@ -322,6 +322,10 @@
                     {
                       "name": "video_url",
                       "type": "string"
+                    },
+                    {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
                     }
                   ]
                 }
@@ -350,7 +354,7 @@
           "title": "Verkada Camera Alerts (CCP)",
           "publisher": "Saggie Haim",
           "descriptionMarkdown": "The Verkada Camera Alerts data connector provides the capability to ingest [Verkada Camera Alerts](https://apidocs.verkada.com/reference/getnotificationsviewv1) into Microsoft Sentinel using the Verkada REST API. Refer to [Verkada documentation](https://apidocs.verkada.com/reference/getnotificationsviewv1) for more information.",
-          "graphQueriesTableName": "Verkada_Camera_Alerts_CL",
+          "graphQueriesTableName": "VerkadaCameraAlerts_CL",
           "graphQueries": [
             {
               "metricName": "Events received",
@@ -361,7 +365,7 @@
           "sampleQueries": [
             {
               "description": "All Verkada camera alerts",
-              "query": "Verkada_Camera_Alerts_CL\n| sort by TimeGenerated desc"
+              "query": "VerkadaCameraAlerts_CL\n| sort by TimeGenerated desc"
             }
           ],
           "dataTypes": [
@@ -555,7 +559,7 @@
               "kind": "RestApiPoller",
               "properties": {
                 "connectorDefinitionName": "VerkadaCameraAlertsCCPDefinition",
-                "dataType": "Verkada_Camera_Alerts_CL",
+                "dataType": "VerkadaCameraAlerts_CL",
                 "response": {
                   "eventsJsonPaths": [
                     "$.notifications"
@@ -574,10 +578,16 @@
                     "value": "[[parameters('password')]"
                   },
                   "TokenEndpoint": "https://api.verkada.com/token",
+                  "JwtTokenJsonPath": "$.token",
+                  "TokenEndpointHeaders": {
+                    "x-api-key": "[[parameters('password')]",
+                    "Accept": "application/json"
+                  },
+                  "ApiKeyName": "x-verkada-auth",
                   "IsJsonRequest": true
                 },
                 "request": {
-                  "apiEndpoint": "https://api.verkada.com/v1/alerts",
+                  "apiEndpoint": "https://api.verkada.com/cameras/v1/alerts",
                   "rateLimitQPS": 5,
                   "queryWindowInMin": 5,
                   "httpMethod": "GET",
@@ -593,7 +603,7 @@
                 "dcrConfig": {
                   "dataCollectionEndpoint": "[[parameters('dcrConfig').dataCollectionEndpoint]",
                   "dataCollectionRuleImmutableId": "[[parameters('dcrConfig').dataCollectionRuleImmutableId]",
-                  "streamName": "Custom-Verkada_Camera_Alerts_CL"
+                  "streamName": "Custom-VerkadaCameraAlerts_CL"
                 }
               }
             }
@@ -622,7 +632,7 @@
         "contentKind": "Solution",
         "contentProductId": "[variables('_solutioncontentProductId')]",
         "id": "[variables('_solutioncontentProductId')]",
-        "icon": "<img src=\"https://raw.githubusercontent.com/SaggiehaimBlog/MicrosoftSecurity/refs/heads/main/Sentinel/Connectors/Verkada/resources/logo-symbol.svg \" width=\"75px\" height=\"75px\">",
+        "icon": "<img src=\"https://raw.githubusercontent.com/SaggiehaimBlog/MicrosoftSecurity/main/Sentinel/Connectors/Verkada/resources/logo-symbol.svg\" width=\"75px\" height=\"75px\">",
         "contentId": "[variables('_solutionId')]",
         "parentId": "[variables('_solutionId')]",
         "source": {

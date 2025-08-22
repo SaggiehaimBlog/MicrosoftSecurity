@@ -1,6 +1,6 @@
 {
     "name": "VerkadaCameraAlertsCCPDefinition",
-    "apiVersion": "2025-03-01",
+    "apiVersion": "2022-09-01-preview",
     "type": "Microsoft.SecurityInsights/dataConnectorDefinitions",
     "location": "{{location}}",
     "kind": "Customizable",
@@ -11,7 +11,7 @@
             "title": "Verkada Camera Alerts (CCP)",
             "publisher": "Saggie Haim",
             "descriptionMarkdown": "The Verkada Camera Alerts data connector provides the capability to ingest [Verkada Camera Alerts](https://apidocs.verkada.com/reference/getnotificationsviewv1) into Microsoft Sentinel using the Verkada REST API. Refer to [Verkada documentation](https://apidocs.verkada.com/reference/getnotificationsviewv1) for more information.",
-            "graphQueriesTableName": "Verkada_Camera_Alerts_CL",
+            "graphQueriesTableName": "VerkadaCameraAlerts_CL",
             "graphQueries": [
                 {
                     "metricName": "Events received",
@@ -22,7 +22,7 @@
             "sampleQueries": [
                 {
                     "description": "All Verkada camera alerts",
-                    "query": "Verkada_Camera_Alerts_CL\n| sort by TimeGenerated desc"
+                    "query": "VerkadaCameraAlerts_CL\n| sort by TimeGenerated desc"
                 }
             ],
             "dataTypes": [

@@ -1,12 +1,12 @@
 [
     {
-        "name": "Verkada_Camera_Alerts_CL",
+        "name": "VerkadaCameraAlerts_CL",
         "apiVersion": "2022-10-01",
         "type": "Microsoft.OperationalInsights/workspaces/tables",
         "location": "{{location}}",
         "properties": {
             "schema": {
-                "name": "Verkada_Camera_Alerts_CL",
+                "name": "VerkadaCameraAlerts_CL",
                 "columns": [
                     {
                         "name": "camera_id",
@@ -14,7 +14,7 @@
                     },
                     {
                         "name": "created",
-                        "type": "datetime"
+                        "type": "string"
                     },
                     {
                         "name": "crowd_threshold",
@@ -43,7 +43,7 @@
                     {
                         "name": "TimeGenerated",
                         "type": "datetime"
-                    }                    
+                    }      
                 ]
             }
         }

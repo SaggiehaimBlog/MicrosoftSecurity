@@ -27,12 +27,14 @@
                 "TokenEndpoint": "https://api.verkada.com/token",
                 "JwtTokenJsonPath": "$.token",
                 "TokenEndpointHeaders": {
-                    "x-api-key": "[[parameters('password')]]"
+                    "x-api-key": "[[parameters('password')]",
+                    "Accept": "application/json"
                 },
+                "ApiKeyName": "x-verkada-auth",
                 "IsJsonRequest": true
             },
             "request": {
-                "apiEndpoint": "https://api.verkada.com/v1/alerts",
+                "apiEndpoint": "https://api.verkada.com/cameras/v1/alerts",
                 "rateLimitQPS": 5,
                 "queryWindowInMin": 5,
                 "httpMethod": "GET",
@@ -42,7 +44,6 @@
                 "startTimeAttributeName": "start_time",
                 "endTimeAttributeName": "end_time",
                 "headers": {
-                    "x-verkada-auth": "",
                     "Accept": "application/json"
                 }
             },
