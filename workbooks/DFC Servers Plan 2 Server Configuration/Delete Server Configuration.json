@@ -47,8 +47,7 @@
             "timeContext": {
               "durationMs": 86400000
             },
-            "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources"
+            "queryType": 1
           }
         ],
         "style": "pills",
@@ -68,7 +67,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "resources\r\n| where type == \"microsoft.compute/virtualmachines\"\r\n| where resourceGroup == \"{ResourceGroup:resourcegroup}\"\r\n| project  subscriptionId, resourceGroup , name",
+        "query": "resources\r\n| where type == \"microsoft.compute/virtualmachines\"\r\n| where resourceGroup == \"{ResourceGroup:resourcegroup}\"\r\n| project  subscriptionId, resourceGroup , name, id",
         "size": 0,
         "exportedParameters": [
           {
@@ -110,7 +109,19 @@
           "showBorder": false
         }
       },
+      "customWidth": "50",
       "name": "query - 0"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/subscriptions/{subscriptionId}/resourceGroups/{VMresourceGroup}/providers/Microsoft.Compute/virtualMachines/{VMname}/providers/Microsoft.Security/pricings?api-version=2024-01-01\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":[{\"type\":\"jsonpath\",\"settings\":{\"tablePath\":\"\",\"columns\":[{\"path\":\"$.value[0].properties.subPlan\",\"columnid\":\"D4SPlan\",\"columnType\":\"string\"},{\"path\":\"$.value[0].properties.extensions\",\"columnid\":\"Ext\"}]}}]}",
+        "size": 0,
+        "queryType": 12
+      },
+      "customWidth": "50",
+      "name": "query - 4"
     },
     {
       "type": 11,
@@ -141,5 +152,6 @@
   "fallbackResourceIds": [
     "Azure Monitor"
   ],
+  "fromTemplateId": "sentinel-CostWorkbook",
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
 }
