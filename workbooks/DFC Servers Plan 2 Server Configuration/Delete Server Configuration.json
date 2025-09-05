@@ -67,7 +67,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "resources\r\n| where type == \"microsoft.compute/virtualmachines\"\r\n| where resourceGroup == \"{ResourceGroup:resourcegroup}\"\r\n| project  subscriptionId, resourceGroup , name, id",
+        "query": "resources\r\n| where type == \"microsoft.compute/virtualmachines\"\r\n| where resourceGroup =~ \"{ResourceGroup:resourcegroup}\"\r\n| project  subscriptionId, resourceGroup , name, id",
         "size": 0,
         "exportedParameters": [
           {
