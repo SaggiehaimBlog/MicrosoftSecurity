@@ -2,6 +2,13 @@
   "version": "Notebook/1.0",
   "items": [
     {
+      "type": 1,
+      "content": {
+        "json": "## Defender for Servers Configuration Deletion\r\n\r\nThis workbook allow you to Remove the resource-level configuration for specific Servers\r\n\r\n### how to use:\r\n1. Pick a subscription and resource group.\r\n2. Pick the VM you want to delete the configuration.\r\n3. Press on Delete configuration and wait for 200 OK result. Be sure to choose the right Delete button based upon the \"Type\" (ex. Hybrid = ARC)."
+      },
+      "name": "text - 3"
+    },
+    {
       "type": 9,
       "content": {
         "version": "KqlParameterItem/1.0",
@@ -27,7 +34,10 @@
             },
             "timeContext": {
               "durationMs": 86400000
-            }
+            },
+            "value": [
+              "/subscriptions/61905f17-b201-4a31-b7ba-05cc3c0c45bd"
+            ]
           },
           {
             "id": "1ad16033-05ad-4f0d-bb45-7b45b4b81cb1",
@@ -35,7 +45,6 @@
             "name": "ResourceGroup",
             "label": "Resource Group",
             "type": 5,
-            "isRequired": true,
             "query": "resourcecontainers\r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| project id, name",
             "crossComponentResources": [
               "{Subscription}"
@@ -47,7 +56,9 @@
             "timeContext": {
               "durationMs": 86400000
             },
-            "queryType": 1
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": "/subscriptions/61905f17-b201-4a31-b7ba-05cc3c0c45bd/resourceGroups/1990_Reds"
           }
         ],
         "style": "pills",
@@ -57,18 +68,12 @@
       "name": "parameters - 2"
     },
     {
-      "type": 1,
-      "content": {
-        "json": "## Defender for Servers Configuration Deletion\r\n\r\nThis workbook allow you to Remove the resource-level configuration for specific Servers\r\n\r\n### how to use:\r\n1. Pick a subscription and resource group.\r\n2. Pick the VM you want to delete the configuration.\r\n3. Press on Delete configuration and wait for 200 OK result. "
-      },
-      "name": "text - 3"
-    },
-    {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "resources\r\n| where type == \"microsoft.compute/virtualmachines\"\r\n| where resourceGroup =~ \"{ResourceGroup:resourcegroup}\"\r\n| project  subscriptionId, resourceGroup , name, id",
+        "query": "resources\r\n| where type == \"microsoft.compute/virtualmachines\" or type == \"microsoft.hybridcompute/machines\"\r\n| where resourceGroup =~ \"{ResourceGroup:resourcegroup}\"\r\n| project  subscriptionId, resourceGroup , name, id, type",
         "size": 0,
+        "title": "List of Virtual Machines",
         "exportedParameters": [
           {
             "fieldName": "subscriptionId",
@@ -89,7 +94,7 @@
         "queryType": 1,
         "resourceType": "microsoft.resourcegraph/resources",
         "crossComponentResources": [
-          "{Subscription}"
+          "{ResourceGroup}"
         ],
         "visualization": "table",
         "gridSettings": {
@@ -103,25 +108,80 @@
                 "linkIsContextBlade": false
               }
             }
-          ]
+          ],
+          "rowLimit": 10000
         },
         "tileSettings": {
           "showBorder": false
         }
       },
-      "customWidth": "50",
       "name": "query - 0"
     },
     {
-      "type": 3,
+      "type": 12,
       "content": {
-        "version": "KqlItem/1.0",
-        "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/subscriptions/{subscriptionId}/resourceGroups/{VMresourceGroup}/providers/Microsoft.Compute/virtualMachines/{VMname}/providers/Microsoft.Security/pricings?api-version=2024-01-01\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":[{\"type\":\"jsonpath\",\"settings\":{\"tablePath\":\"\",\"columns\":[{\"path\":\"$.value[0].properties.subPlan\",\"columnid\":\"D4SPlan\",\"columnType\":\"string\"},{\"path\":\"$.value[0].properties.extensions\",\"columnid\":\"Ext\"}]}}]}",
-        "size": 0,
-        "queryType": 12
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/subscriptions/{subscriptionId}/resourceGroups/{VMresourceGroup}/providers/Microsoft.Compute/virtualMachines/{VMname}/providers/Microsoft.Security/pricings?api-version=2024-01-01\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":[{\"type\":\"jsonpath\",\"settings\":{\"tablePath\":\"\",\"columns\":[{\"path\":\"$.value[0].properties.subPlan\",\"columnid\":\"D4SPlan\",\"columnType\":\"string\"},{\"path\":\"$.value[0].properties.extensions\",\"columnid\":\"Ext\"}]}}]}",
+              "size": 0,
+              "title": "Azure Server Subplan Details (P1 or P2)",
+              "noDataMessage": "No results. This maybe an Hybrid machine (Azure Arc) so check the next section.",
+              "queryType": 12
+            },
+            "customWidth": "50",
+            "name": "query - 4 - Copy"
+          },
+          {
+            "type": 12,
+            "content": {
+              "version": "NotebookGroup/1.0",
+              "groupType": "editable",
+              "items": [
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/subscriptions/{subscriptionId}/resourceGroups/{VMresourceGroup}/providers/Microsoft.hybridcompute/machines/{VMname}/providers/Microsoft.Security/pricings?api-version=2024-01-01\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":[{\"type\":\"jsonpath\",\"settings\":{\"tablePath\":\"\",\"columns\":[{\"path\":\"$.value[0].properties.subPlan\",\"columnid\":\"D4SPlan\",\"columnType\":\"string\"},{\"path\":\"$.value[0].properties.extensions\",\"columnid\":\"Ext\"}]}}]}",
+                    "size": 0,
+                    "title": "Azure Arc Machine Subplan Details (P1 or P2)",
+                    "noDataMessage": "No results. This maybe an Hybrid machine (Azure Arc) so check the next section.",
+                    "noDataMessageStyle": 5,
+                    "showRefreshButton": true,
+                    "queryType": 12,
+                    "gridSettings": {
+                      "sortBy": [
+                        {
+                          "itemKey": "D4SPlan",
+                          "sortOrder": 1
+                        }
+                      ]
+                    },
+                    "sortBy": [
+                      {
+                        "itemKey": "D4SPlan",
+                        "sortOrder": 1
+                      }
+                    ]
+                  },
+                  "customWidth": "100",
+                  "name": "query - 4 - Copy"
+                }
+              ]
+            },
+            "customWidth": "50",
+            "name": "group - 4 - Copy"
+          }
+        ]
       },
-      "customWidth": "50",
-      "name": "query - 4"
+      "name": "group - 4",
+      "styleSettings": {
+        "showBorder": true
+      }
     },
     {
       "type": 11,
@@ -133,7 +193,7 @@
             "id": "631aa5b5-3f87-4f77-af81-62f0e057497c",
             "linkTarget": "ArmAction",
             "linkLabel": "Delete Configuration",
-            "preText": "",
+            "preText": "For Azure Servers:",
             "style": "primary",
             "linkIsContextBlade": true,
             "armActionContext": {
@@ -143,14 +203,29 @@
               "httpMethod": "DELETE",
               "description": "# Actions can potentially modify resources.\n## Please use caution and include a confirmation message in this description when authoring this command."
             }
+          },
+          {
+            "id": "170b03e6-83f0-4c21-8a5d-c257446f6d5e",
+            "linkTarget": "ArmAction",
+            "linkLabel": "Delete Configuration",
+            "preText": "For ARC Enabled Servers:",
+            "style": "primary",
+            "linkIsContextBlade": true,
+            "armActionContext": {
+              "path": "/subscriptions/{subscriptionId}/resourceGroups/{VMresourceGroup}/providers/Microsoft.Hybridcompute/Machines/{VMname}/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01",
+              "headers": [],
+              "params": [],
+              "httpMethod": "DELETE",
+              "description": "# Actions can potentially modify resources.\n## Please use caution and include a confirmation message in this description when authoring this command."
+            }
           }
         ]
       },
-      "name": "links - 1"
+      "name": "For Azure VMs"
     }
   ],
   "fallbackResourceIds": [
-    "Azure Monitor"
+    "Azure Security Center"
   ],
   "fromTemplateId": "sentinel-CostWorkbook",
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
