@@ -1,0 +1,1533 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{SubscriptionArg}"
+        ],
+        "parameters": [
+          {
+            "id": "2e3a4474-0831-42da-9543-59d3a4e03876",
+            "version": "KqlParameterItem/1.0",
+            "name": "SubscriptionArg",
+            "type": 6,
+            "isGlobal": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "ef3135f0-2da9-4f97-8a2b-8a18ee8665cd",
+            "version": "KqlParameterItem/1.0",
+            "name": "SeverityArg2",
+            "label": "Severity",
+            "type": 2,
+            "isGlobal": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project ['Severity'] = properties.metadata.severity\r\n| where isnotempty(Severity)\r\n| distinct tostring(Severity)",
+            "crossComponentResources": [
+              "{SubscriptionArg}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "fbe94904-a53d-4672-95ed-55a80d106c64",
+            "version": "KqlParameterItem/1.0",
+            "name": "RecommendationStateArg",
+            "label": "Recommendation State",
+            "type": 2,
+            "isGlobal": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "\r\nsecurityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project ['StatusCode'] = properties.status.code\r\n| where isnotempty(StatusCode)\r\n| distinct tostring(StatusCode)",
+            "crossComponentResources": [
+              "value::all"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters - 5"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "links": [
+          {
+            "id": "f8c73c8d-fece-45ed-ad5c-9033ed12d7b3",
+            "cellValue": "TabArg",
+            "linkTarget": "parameter",
+            "linkLabel": "Reccomendations Summary",
+            "subTarget": "recomendations",
+            "style": "link"
+          },
+          {
+            "id": "053ceb69-4378-4a1f-a2e3-fe8720655e52",
+            "cellValue": "TabArg",
+            "linkTarget": "parameter",
+            "linkLabel": "Not Applicable Recommendations",
+            "subTarget": "NotApplicable",
+            "style": "link"
+          }
+        ]
+      },
+      "name": "links - 3"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| distinct subscriptionId\r\n| count",
+              "size": 4,
+              "title": "Number of Subscriptions",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "card",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "Subscriptions",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "15",
+            "name": "query - 7"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project ['DisplayName'] = properties.displayName\r\n| count",
+              "size": 4,
+              "title": "Number of Recommendations",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "card",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "Subscriptions",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "15",
+            "name": "query - 7 - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project ['StatusCode'] = properties.status.code\r\n| where StatusCode == \"Healthy\"\r\n| count",
+              "size": 4,
+              "title": "Passed Recommendations",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "stat",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "staticColor": "green",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "10",
+            "name": "query - 7 - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project ['StatusCode'] = properties.status.code\r\n| where StatusCode == \"Unhealthy\"\r\n| count",
+              "size": 4,
+              "title": "Failed Recommendations",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "stat",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "staticColor": "redBright",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "10",
+            "name": "query - 7 - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project ['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8])\r\n| distinct ResourceName\r\n| count",
+              "size": 4,
+              "title": "Number of Resources",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "stat",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "10",
+            "name": "query - 7 - Copy - Copy - Copy - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['StatusCode'] = properties.status.code,\r\n['Severity'] = properties.metadata.severity,\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8])\r\n| summarize by tostring(ResourceName), tostring(Severity), tostring(StatusCode)\r\n| where StatusCode == \"Healthy\"\r\n| distinct ResourceName\r\n| count",
+              "size": 4,
+              "title": "Healthy Resources",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "stat",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "staticColor": "green",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "10",
+            "name": "query - 7 - Copy - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['StatusCode'] = properties.status.code,\r\n['Severity'] = properties.metadata.severity,\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8])\r\n| summarize by tostring(ResourceName), tostring(Severity), tostring(StatusCode)\r\n| where StatusCode == \"Unhealthy\"\r\n| distinct ResourceName\r\n| count",
+              "size": 4,
+              "title": "Unhealthy Resources",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "stat",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "staticColor": "redBright",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "10",
+            "name": "query - 7 - Copy - Copy - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = properties.links.azurePortal\r\n| summarize count() by tostring(StatusCode)\r\n| order by count_\r\n",
+              "size": 0,
+              "title": "Recommendations Status",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "name": "query - 0 - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = properties.links.azurePortal\r\n| where StatusCode == \"Unhealthy\"\r\n| summarize count() by tostring(ResourceType)\r\n| order by count_\r\n| where count_ > 5",
+              "size": 0,
+              "title": "Unhealthy Recommendations by Resource Type",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "name": "query - 0 - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = properties.links.azurePortal\r\n| summarize count() by tostring(ResourceName), tostring(StatusCode)\r\n| order by count_\r\n| where count_ > 40",
+              "size": 0,
+              "title": "Not Applicable Recommendations by Severity",
+              "exportFieldName": "Severity",
+              "exportParameterName": "SeverityArg",
+              "exportDefaultValue": "*",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "barchart",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "$gen_group",
+                    "formatter": 8,
+                    "formatOptions": {
+                      "palette": "blue"
+                    }
+                  }
+                ],
+                "hierarchySettings": {
+                  "treeType": 1,
+                  "groupBy": [
+                    "ResourceName"
+                  ]
+                }
+              },
+              "tileSettings": {
+                "titleContent": {
+                  "columnMatch": "ResourceName",
+                  "formatter": 1
+                },
+                "leftContent": {
+                  "columnMatch": "StatusCode",
+                  "formatter": 1
+                },
+                "secondaryContent": {
+                  "columnMatch": "count_",
+                  "formatter": 1
+                },
+                "showBorder": false,
+                "sortCriteriaField": "ResourceName"
+              },
+              "graphSettings": {
+                "type": 2,
+                "topContent": {
+                  "columnMatch": "ResourceName",
+                  "formatter": 1
+                },
+                "centerContent": {
+                  "columnMatch": "count_",
+                  "formatter": 1,
+                  "numberFormat": {
+                    "unit": 17,
+                    "options": {
+                      "maximumSignificantDigits": 3,
+                      "maximumFractionDigits": 2
+                    }
+                  }
+                },
+                "hivesContent": {
+                  "columnMatch": "ResourceName",
+                  "formatter": 1
+                },
+                "nodeIdField": "ResourceName",
+                "sourceIdField": "ResourceName",
+                "targetIdField": "StatusCode",
+                "graphOrientation": 3,
+                "showOrientationToggles": false,
+                "nodeSize": null,
+                "staticNodeSize": 3,
+                "colorSettings": {
+                  "nodeColorField": "count_",
+                  "type": 4,
+                  "heatmapPalette": "greenRed",
+                  "heatmapMin": null,
+                  "heatmapMax": null
+                },
+                "groupByField": "ResourceName",
+                "hivesMargin": 5,
+                "edgeColorSettings": null
+              },
+              "chartSettings": {
+                "xAxis": "ResourceName",
+                "yAxis": [
+                  "count_"
+                ],
+                "group": "StatusCode",
+                "createOtherGroup": 30,
+                "showMetrics": false,
+                "showLegend": true,
+                "ySettings": {
+                  "numberFormatSettings": {
+                    "unit": 0,
+                    "options": {
+                      "style": "decimal",
+                      "useGrouping": true
+                    }
+                  }
+                }
+              },
+              "mapSettings": {
+                "locInfo": "LatLong",
+                "sizeSettings": "count_",
+                "sizeAggregation": "Sum",
+                "legendMetric": "count_",
+                "legendAggregation": "Sum",
+                "itemColorSettings": {
+                  "type": "heatmap",
+                  "colorAggregation": "Sum",
+                  "nodeColorField": "count_",
+                  "heatmapPalette": "greenRed"
+                }
+              }
+            },
+            "customWidth": "33",
+            "name": "query - 0 - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['StatusCode'] = properties.status.code,\r\n['Severity'] = properties.metadata.severity\r\n| where StatusCode in ({RecommendationStateArg})\r\n| where Severity in ({SeverityArg2})\r\n| summarize count() by tostring(ResourceType), tostring(Severity)\r\n| order by count_\r\n",
+              "size": 0,
+              "title": "Not Applicable Recommendations",
+              "exportFieldName": "ResourceType",
+              "exportParameterName": "ResourceTypeArg",
+              "exportDefaultValue": "",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Severity",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Low",
+                          "representation": "blue",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Medium",
+                          "representation": "orange",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "High",
+                          "representation": "redBright",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "lightBlue",
+                          "text": "{0}{1}"
+                        }
+                      ],
+                      "showAsTag": true
+                    }
+                  },
+                  {
+                    "columnMatch": "count_",
+                    "formatter": 4,
+                    "formatOptions": {
+                      "max": 500,
+                      "palette": "blue"
+                    }
+                  }
+                ],
+                "rowLimit": 1000,
+                "filter": true,
+                "sortBy": [
+                  {
+                    "itemKey": "$gen_bar_count__2",
+                    "sortOrder": 2
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "$gen_bar_count__2",
+                  "sortOrder": 2
+                }
+              ]
+            },
+            "customWidth": "50",
+            "name": "query - 0 - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['StatusCode'] = properties.status.code,\r\n['Severity'] = properties.metadata.severity\r\n| where StatusCode in ({RecommendationStateArg})\r\n| where Severity in ({SeverityArg2})\r\n| where ResourceType == \"{ResourceTypeArg}\"\r\n| summarize count() by tostring(DisplayName), tostring(Severity)\r\n| order by count_\r\n",
+              "size": 0,
+              "title": "Not Applicable Recommendations",
+              "exportFieldName": "DisplayName",
+              "exportParameterName": "DisplayNameArg",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Severity",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Low",
+                          "representation": "blue",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Medium",
+                          "representation": "orange",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "High",
+                          "representation": "redBright",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "lightBlue",
+                          "text": "{0}{1}"
+                        }
+                      ],
+                      "showAsTag": true
+                    }
+                  },
+                  {
+                    "columnMatch": "count_",
+                    "formatter": 4,
+                    "formatOptions": {
+                      "max": 500,
+                      "palette": "blue"
+                    }
+                  }
+                ],
+                "rowLimit": 1000,
+                "filter": true
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "conditionalVisibility": {
+              "parameterName": "ResourceTypeArg",
+              "comparison": "isNotEqualTo"
+            },
+            "name": "query - 0 - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['StatusCode'] = properties.status.code,\r\n['Severity'] = properties.metadata.severity\r\n| where StatusCode in ({RecommendationStateArg})\r\n| where Severity in ({SeverityArg2})\r\n| summarize count() by tostring(DisplayName), tostring(Severity)\r\n| order by count_\r\n",
+              "size": 0,
+              "title": "Not Applicable Recommendations",
+              "exportFieldName": "DisplayName",
+              "exportParameterName": "DisplayNameArg",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Severity",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Low",
+                          "representation": "blue",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Medium",
+                          "representation": "orange",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "High",
+                          "representation": "redBright",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "lightBlue",
+                          "text": "{0}{1}"
+                        }
+                      ],
+                      "showAsTag": true
+                    }
+                  },
+                  {
+                    "columnMatch": "count_",
+                    "formatter": 4,
+                    "formatOptions": {
+                      "max": 500,
+                      "palette": "blue"
+                    }
+                  }
+                ],
+                "rowLimit": 1000,
+                "filter": true
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "conditionalVisibility": {
+              "parameterName": "ResourceTypeArg",
+              "comparison": "isEqualTo"
+            },
+            "name": "query - 0 - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = strcat(\"https://\", properties.links.azurePortal)\r\n| where StatusCode in ({RecommendationStateArg})\r\n| where DisplayName == \"{DisplayNameArg}\"\r\n| distinct tostring(Remediation)",
+              "size": 0,
+              "title": "Remediation Steps",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "card",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Link",
+                    "formatter": 7,
+                    "formatOptions": {
+                      "linkTarget": "Url",
+                      "linkLabel": "Go to Recommendation",
+                      "linkIsContextBlade": false
+                    }
+                  }
+                ]
+              },
+              "sortBy": [],
+              "textSettings": {
+                "style": "markdown"
+              }
+            },
+            "customWidth": "50",
+            "conditionalVisibility": {
+              "parameterName": "DisplayNameArg",
+              "comparison": "isNotEqualTo"
+            },
+            "name": "query - 0 - Copy - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = strcat(\"https://\", properties.links.azurePortal)\r\n| where StatusCode in ({RecommendationStateArg})\r\n| where DisplayName == \"{DisplayNameArg}\"\r\n| distinct tostring(Description)",
+              "size": 0,
+              "title": "Recommendation Description",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "card",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Link",
+                    "formatter": 7,
+                    "formatOptions": {
+                      "linkTarget": "Url",
+                      "linkLabel": "Go to Recommendation",
+                      "linkIsContextBlade": false
+                    }
+                  }
+                ]
+              },
+              "sortBy": [],
+              "textSettings": {
+                "style": "markdown"
+              }
+            },
+            "customWidth": "50",
+            "conditionalVisibility": {
+              "parameterName": "DisplayNameArg",
+              "comparison": "isNotEqualTo"
+            },
+            "name": "query - 0 - Copy - Copy - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = strcat(\"https://\", properties.links.azurePortal)\r\n| where StatusCode in ({RecommendationStateArg})\r\n| where DisplayName == \"{DisplayNameArg}\"\r\n| project  tostring(DisplayName),  tostring(StatusCode), ResourceType, ResourceName, ResourceGroup, SubscriptionID, Link",
+              "size": 0,
+              "title": "Recommendation Details",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Link",
+                    "formatter": 7,
+                    "formatOptions": {
+                      "linkTarget": "Url",
+                      "linkLabel": "Go to Recommendation",
+                      "linkIsContextBlade": false
+                    }
+                  }
+                ]
+              },
+              "sortBy": []
+            },
+            "conditionalVisibility": {
+              "parameterName": "DisplayNameArg",
+              "comparison": "isNotEqualTo"
+            },
+            "name": "query - 0 - Copy - Copy - Copy"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "TabArg",
+        "comparison": "isEqualTo",
+        "value": "recomendations"
+      },
+      "name": "Recommendations"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| distinct subscriptionId\r\n| count",
+              "size": 4,
+              "title": "Number of Subscriptions",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "card",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "Subscriptions",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "15",
+            "name": "query - 7"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project ['DisplayName'] = properties.displayName\r\n| count",
+              "size": 4,
+              "title": "Number of Recommendations",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "card",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "Subscriptions",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "15",
+            "name": "query - 7 - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project ['StatusCode'] = properties.status.code\r\n| where StatusCode == \"Healthy\"\r\n| count",
+              "size": 4,
+              "title": "Passed Recommendations",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "stat",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "staticColor": "green",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "15",
+            "name": "query - 7 - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project ['StatusCode'] = properties.status.code\r\n| where StatusCode == \"Unhealthy\"\r\n| count",
+              "size": 4,
+              "title": "Failed Recommendations",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "stat",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "staticColor": "redBright",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "15",
+            "name": "query - 7 - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['StatusCode'] = properties.status.code,\r\n['Severity'] = properties.metadata.severity\r\n| summarize by tostring(ResourceName), tostring(Severity), tostring(StatusCode)\r\n| where StatusCode == \"Healthy\"\r\n| count",
+              "size": 4,
+              "title": "Healthy Resources",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "stat",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "staticColor": "green",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "15",
+            "name": "query - 7 - Copy - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n| project\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['StatusCode'] = properties.status.code,\r\n['Severity'] = properties.metadata.severity\r\n| summarize by tostring(ResourceName), tostring(Severity), tostring(StatusCode)\r\n| where StatusCode == \"Unhealthy\"\r\n| count",
+              "size": 4,
+              "title": "Unhealthy Resources",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "stat",
+              "tileSettings": {
+                "showBorder": false
+              },
+              "statSettings": {
+                "valueAggregation": "None",
+                "colorSettings": {
+                  "type": "static",
+                  "mode": "background",
+                  "staticColor": "redBright",
+                  "heatmapPalette": "greenRed",
+                  "thresholdsGrid": []
+                },
+                "iconSettings": {
+                  "thresholdsGrid": []
+                },
+                "tagText": "",
+                "valueFontStyle": "auto"
+              },
+              "textSettings": {
+                "style": "bignumber"
+              }
+            },
+            "customWidth": "15",
+            "name": "query - 7 - Copy - Copy - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = properties.links.azurePortal\r\n| summarize count() by tostring(StatusCode)\r\n| order by count_\r\n",
+              "size": 0,
+              "title": "Recommendations Status",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "name": "query - 0 - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = properties.links.azurePortal\r\n| where StatusCode == \"NotApplicable\"\r\n| summarize count() by tostring(StatusDescription)\r\n| order by count_\r\n| where count_ > 5",
+              "size": 0,
+              "title": "Not Applicable Recommendations by Status",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "name": "query - 0 - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = properties.links.azurePortal\r\n| where StatusCode == \"NotApplicable\"\r\n| summarize count() by tostring(Severity)\r\n| order by count_\r\n| where count_ > 5",
+              "size": 0,
+              "title": "Not Applicable Recommendations by Severity",
+              "exportFieldName": "Severity",
+              "exportParameterName": "SeverityArg",
+              "exportDefaultValue": "*",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "name": "query - 0 - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['StatusCode'] = properties.status.code,\r\n['Severity'] = properties.metadata.severity\r\n| where StatusCode == \"NotApplicable\"\r\n| where Severity in ({SeverityArg2})\r\n| summarize count() by tostring(ResourceType), tostring(Severity)\r\n| order by count_\r\n",
+              "size": 0,
+              "title": "Not Applicable Recommendations",
+              "exportFieldName": "ResourceType",
+              "exportParameterName": "ResourceTypeArg",
+              "exportDefaultValue": "",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Severity",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Low",
+                          "representation": "blue",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Medium",
+                          "representation": "orange",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "High",
+                          "representation": "redBright",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "lightBlue",
+                          "text": "{0}{1}"
+                        }
+                      ],
+                      "showAsTag": true
+                    }
+                  },
+                  {
+                    "columnMatch": "count_",
+                    "formatter": 4,
+                    "formatOptions": {
+                      "max": 500,
+                      "palette": "blue"
+                    }
+                  }
+                ],
+                "rowLimit": 1000,
+                "filter": true,
+                "sortBy": [
+                  {
+                    "itemKey": "$gen_bar_count__2",
+                    "sortOrder": 2
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "$gen_bar_count__2",
+                  "sortOrder": 2
+                }
+              ]
+            },
+            "customWidth": "50",
+            "name": "query - 0 - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['StatusCode'] = properties.status.code,\r\n['Severity'] = properties.metadata.severity\r\n| where StatusCode == \"NotApplicable\"\r\n| where Severity in ({SeverityArg2})\r\n| where ResourceType == \"{ResourceTypeArg}\"\r\n| summarize count() by tostring(DisplayName), tostring(Severity)\r\n| order by count_\r\n",
+              "size": 0,
+              "title": "Not Applicable Recommendations",
+              "exportFieldName": "DisplayName",
+              "exportParameterName": "DisplayNameArg",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Severity",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Low",
+                          "representation": "blue",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Medium",
+                          "representation": "orange",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "High",
+                          "representation": "redBright",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "lightBlue",
+                          "text": "{0}{1}"
+                        }
+                      ],
+                      "showAsTag": true
+                    }
+                  },
+                  {
+                    "columnMatch": "count_",
+                    "formatter": 4,
+                    "formatOptions": {
+                      "max": 500,
+                      "palette": "blue"
+                    }
+                  }
+                ],
+                "rowLimit": 1000,
+                "filter": true
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "conditionalVisibility": {
+              "parameterName": "ResourceTypeArg",
+              "comparison": "isNotEqualTo"
+            },
+            "name": "query - 0 - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['StatusCode'] = properties.status.code,\r\n['Severity'] = properties.metadata.severity\r\n| where StatusCode == \"NotApplicable\"\r\n| where Severity in ({SeverityArg2})\r\n| summarize count() by tostring(DisplayName), tostring(Severity)\r\n| order by count_\r\n",
+              "size": 0,
+              "title": "Not Applicable Recommendations",
+              "exportFieldName": "DisplayName",
+              "exportParameterName": "DisplayNameArg",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Severity",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Low",
+                          "representation": "blue",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Medium",
+                          "representation": "orange",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "High",
+                          "representation": "redBright",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "lightBlue",
+                          "text": "{0}{1}"
+                        }
+                      ],
+                      "showAsTag": true
+                    }
+                  },
+                  {
+                    "columnMatch": "count_",
+                    "formatter": 4,
+                    "formatOptions": {
+                      "max": 500,
+                      "palette": "blue"
+                    }
+                  }
+                ],
+                "rowLimit": 1000,
+                "filter": true
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "conditionalVisibility": {
+              "parameterName": "ResourceTypeArg",
+              "comparison": "isEqualTo"
+            },
+            "name": "query - 0 - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = strcat(\"https://\", properties.links.azurePortal)\r\n| where StatusCode in ({RecommendationStateArg})\r\n| where DisplayName == \"{DisplayNameArg}\"\r\n| distinct tostring(Remediation)",
+              "size": 0,
+              "title": "Remediation Steps",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "card",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Link",
+                    "formatter": 7,
+                    "formatOptions": {
+                      "linkTarget": "Url",
+                      "linkLabel": "Go to Recommendation",
+                      "linkIsContextBlade": false
+                    }
+                  }
+                ]
+              },
+              "sortBy": [],
+              "textSettings": {
+                "style": "markdown"
+              }
+            },
+            "customWidth": "50",
+            "conditionalVisibility": {
+              "parameterName": "DisplayNameArg",
+              "comparison": "isNotEqualTo"
+            },
+            "name": "query - 0 - Copy - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = strcat(\"https://\", properties.links.azurePortal)\r\n| where StatusCode == \"NotApplicable\"\r\n| where DisplayName == \"{DisplayNameArg}\"\r\n| distinct tostring(Description)",
+              "size": 0,
+              "title": "Recommendation Description",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "card",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Link",
+                    "formatter": 7,
+                    "formatOptions": {
+                      "linkTarget": "Url",
+                      "linkLabel": "Go to Recommendation",
+                      "linkIsContextBlade": false
+                    }
+                  }
+                ]
+              },
+              "sortBy": [],
+              "textSettings": {
+                "style": "markdown"
+              }
+            },
+            "customWidth": "50",
+            "conditionalVisibility": {
+              "parameterName": "DisplayNameArg",
+              "comparison": "isNotEqualTo"
+            },
+            "name": "query - 0 - Copy - Copy - Copy - Copy - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "securityresources\r\n| where type == \"microsoft.security/assessments\"\r\n// Get recommendations in useful format\r\n| project\r\n['TenantID'] = tenantId,\r\n['SubscriptionID'] = subscriptionId,\r\n['AssessmentID'] = name,\r\n['DisplayName'] = properties.displayName,\r\n['ResourceType'] = tolower(split(properties.resourceDetails.Id,\"/\").[7]),\r\n['ResourceName'] = tolower(split(properties.resourceDetails.Id,\"/\").[8]),\r\n['ResourceGroup'] = resourceGroup,\r\n['ContainsNestedRecom'] = tostring(properties.additionalData.subAssessmentsLink),\r\n['StatusCode'] = properties.status.code,\r\n['StatusDescription'] = properties.status.description,\r\n['PolicyDefID'] = properties.metadata.policyDefinitionId,\r\n['Description'] = properties.metadata.description,\r\n['RecomType'] = properties.metadata.assessmentType,\r\n['Remediation'] = properties.metadata.remediationDescription,\r\n['Severity'] = properties.metadata.severity,\r\n['Link'] = strcat(\"https://\", properties.links.azurePortal)\r\n| where StatusCode == \"NotApplicable\"\r\n| where DisplayName == \"{DisplayNameArg}\"\r\n| project  tostring(DisplayName),  tostring(StatusCode), tostring(StatusDescription), ResourceType, ResourceName, ResourceGroup, SubscriptionID, Link",
+              "size": 0,
+              "title": "Recommendation Details",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{SubscriptionArg}"
+              ],
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Link",
+                    "formatter": 7,
+                    "formatOptions": {
+                      "linkTarget": "Url",
+                      "linkLabel": "Go to Recommendation",
+                      "linkIsContextBlade": false
+                    }
+                  }
+                ]
+              },
+              "sortBy": []
+            },
+            "conditionalVisibility": {
+              "parameterName": "DisplayNameArg",
+              "comparison": "isNotEqualTo"
+            },
+            "name": "query - 0 - Copy - Copy - Copy"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "TabArg",
+        "comparison": "isEqualTo",
+        "value": "NotApplicable"
+      },
+      "name": "Recommendations - Copy"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
